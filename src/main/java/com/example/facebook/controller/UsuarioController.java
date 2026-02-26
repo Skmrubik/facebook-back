@@ -32,7 +32,7 @@ public class UsuarioController {
     private ResponseEntity<Boolean> login(@RequestParam String nombre, @RequestParam String password){
         try {
             Usuario user = usuarioRepository.findUsuarioByCorreo(nombre);
-            if (password.equals(user.getPassword())){
+            if (user != null && password.equals(user.getPassword())){
                 return new ResponseEntity<>(true, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(false, HttpStatus.OK);

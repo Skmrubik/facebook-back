@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UsuarioController {
@@ -29,13 +31,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/login")
-    private ResponseEntity<Boolean> login(@RequestParam String nombre, @RequestParam String password){
+    private ResponseEntity<Integer> login(@RequestParam String nombre, @RequestParam String password){
         try {
             Usuario user = usuarioRepository.findUsuarioByCorreo(nombre);
             if (user != null && password.equals(user.getPassword())){
-                return new ResponseEntity<>(true, HttpStatus.OK);
+                return new ResponseEntity<>(user.getIdUsuario(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(false, HttpStatus.OK);
+                return new ResponseEntity<>(-1, HttpStatus.OK);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -43,8 +45,22 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/pathFoto")
+    private ResponseEntity<Map<String, String>> login(@RequestParam String id){
+        try {
+            Integer idUsuario = Integer.parseInt(id);
+            Usuario user = usuarioRepository.findUsuarioByIdUsuario(idUsuario);
+            Map<String, String> response = new HashMap<>();
+            response.put("fileName", user.getPathFotoPerfil());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/registrarUsuario")
-    private ResponseEntity<Boolean> listUsuarios(@RequestBody Registro registro){
+    private ResponseEntity<Boolean> registrarUsuarios(@RequestBody Registro registro){
         try {
             System.out.println(registro.getNombre());
             Usuario usuario = new Usuario();
@@ -52,7 +68,7 @@ public class UsuarioController {
             usuario.setCorreo(registro.getCorreo());
             usuario.setPassword(registro.getPassword());
             usuario.setLugar(registro.getLugar());
-            usuario.setPathFotoPerfil(null);
+            usuario.setPathFotoPerfil(registro.getPathFoto());
             usuarioRepository.save(usuario);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {

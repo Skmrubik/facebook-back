@@ -5,15 +5,17 @@ public class Registro {
     private String lugar;
     private String correo;
     private String password;
+    private String pathFoto;
 
     public Registro() {
     }
 
-    public Registro(String nombre, String lugar, String correo, String password) {
+    public Registro(String nombre, String lugar, String correo, String password, String pathFoto) {
         this.nombre = nombre;
         this.lugar = lugar;
         this.correo = correo;
         this.password = password;
+        this.pathFoto = pathFoto;
     }
 
     public String getNombre() {
@@ -46,5 +48,13 @@ public class Registro {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPathFoto() {
+        return pathFoto;
+    }
+
+    public void setPathFoto(String pathFoto) {
+        this.pathFoto = pathFoto;
     }
 }

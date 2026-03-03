@@ -60,7 +60,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrarUsuario")
-    private ResponseEntity<Boolean> registrarUsuarios(@RequestBody Registro registro){
+    private ResponseEntity<Integer> registrarUsuarios(@RequestBody Registro registro){
         try {
             System.out.println(registro.getNombre());
             Usuario usuario = new Usuario();
@@ -69,8 +69,8 @@ public class UsuarioController {
             usuario.setPassword(registro.getPassword());
             usuario.setLugar(registro.getLugar());
             usuario.setPathFotoPerfil(registro.getPathFoto());
-            usuarioRepository.save(usuario);
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            Usuario user = usuarioRepository.save(usuario);
+            return new ResponseEntity<>(user.getIdUsuario(), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);

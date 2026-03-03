@@ -30,6 +30,18 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/getUsuarioById")
+    private ResponseEntity<Usuario> getUsuarioById(@RequestParam String id){
+        try {
+            Integer idUsuario = Integer.parseInt(id);
+            Usuario user = usuarioRepository.findUsuarioByIdUsuario(idUsuario);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/login")
     private ResponseEntity<Integer> login(@RequestParam String nombre, @RequestParam String password){
         try {

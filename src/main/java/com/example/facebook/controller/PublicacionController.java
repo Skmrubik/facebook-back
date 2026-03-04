@@ -2,8 +2,10 @@ package com.example.facebook.controller;
 
 import com.example.facebook.dto.PublicacionInicio;
 import com.example.facebook.dto.Registro;
+import com.example.facebook.entities.Fotos;
 import com.example.facebook.entities.Publicacion;
 import com.example.facebook.entities.Usuario;
+import com.example.facebook.repositories.FotosRepository;
 import com.example.facebook.repositories.PublicacionRepository;
 import com.example.facebook.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class PublicacionController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    FotosRepository fotosRepository;
+
     @GetMapping("/listPublicaciones")
     private ResponseEntity<List<Publicacion>> listPubilicaciones(){
         try {
@@ -45,7 +50,12 @@ public class PublicacionController {
             publicacion.setIdUsuario1(usuario);
             publicacion.setIdUsuario2(null);
             publicacion.setTexto(pub.getTexto());
-            publicacion.setIdFoto(null);
+            if (pub.getIdFoto()!=null){
+                Fotos foto = fotosRepository.findFotosByIdFoto(pub.getIdFoto());
+                publicacion.setIdFoto(foto);
+            } else {
+                publicacion.setIdFoto(null);
+            }
             Publicacion p = publicacionRepository.save(publicacion);
             return new ResponseEntity<>(p.getIdPublicacion(), HttpStatus.OK);
         } catch (Exception e) {

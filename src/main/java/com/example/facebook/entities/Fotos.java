@@ -1,22 +1,17 @@
 package com.example.facebook.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="fotos")
 public class Fotos {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_foto")
     private Integer idFoto;
 
     @Column(name="path")
     private String path;
-
-    @Column(name="descripcion")
-    private String descripcion;
 
     public Integer getIdFoto() {
         return idFoto;
@@ -34,11 +29,4 @@ public class Fotos {
         this.path = path;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 }

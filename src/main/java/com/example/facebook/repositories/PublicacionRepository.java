@@ -11,6 +11,6 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Intege
     @Query(value="SELECT * FROM publicacion order by id_publicacion DESC", nativeQuery=true)
     public List<Publicacion> getPublicacionesOrdenadas();
 
-    /*@Query(value="Delete FROM publicacion where id_publicacion = ?1", nativeQuery=true)
-    void borrarPublicacion(Integer id);*/
+    @Query(value="SELECT * FROM public.publicacion where id_usuario1 = ?1 order by id_publicacion desc;", nativeQuery=true)
+    public List<Publicacion> getPublicacionesOrdenadasByUser(Integer id);
 }

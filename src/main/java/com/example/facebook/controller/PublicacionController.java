@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,6 +55,18 @@ public class PublicacionController {
             }
             Publicacion p = publicacionRepository.save(publicacion);
             return new ResponseEntity<>(p.getIdPublicacion(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/borrarPublicacion")
+    private ResponseEntity<Boolean> borrarPublicacion(@RequestParam String id){
+        try {
+            Integer idPub = Integer.parseInt(id);
+            publicacionRepository.deleteById(idPub);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);

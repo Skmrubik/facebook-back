@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -63,6 +60,31 @@ public class PublicacionMegustaController {
             publicacionMegusta.setIdUsuario(usuario);
             publicacionMegusta.setIdPublicacion(publicacion);
             publicacionMegustaRepository.save(publicacionMegusta);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getMegusta")
+    private ResponseEntity<Integer> getMegusta(@RequestParam String idUser, @RequestParam String idPub){
+        try {
+            Integer idUsuario = Integer.parseInt(idUser);
+            Integer idPublicacion = Integer.parseInt(idPub);
+            Integer id = publicacionMegustaRepository.getIdPublicacionMeGusta(idPublicacion, idUsuario);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/borrarMegusta")
+    private ResponseEntity<Boolean> borrarMegusta(@RequestParam String id){
+        try {
+            Integer idMG = Integer.parseInt(id);
+            publicacionMegustaRepository.deleteById(idMG);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);

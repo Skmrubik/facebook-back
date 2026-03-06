@@ -11,4 +11,7 @@ public interface PublicacionMegustaRepository extends JpaRepository<PublicacionM
 
     @Query(value="SELECT * FROM public.publicacion_megusta where id_publicacion = ?1", nativeQuery=true)
     public List<PublicacionMegusta> getPublicacionMeGustas(Integer idPublicacion);
+
+    @Query(value="select id_publicacion_megusta from publicacion_megusta where id_publicacion = ?1 and id_usuario = ?2", nativeQuery=true)
+    Integer getIdPublicacionMeGusta(Integer idPublicacion, Integer idUsuario);
 }

@@ -4,10 +4,13 @@ import com.example.facebook.dto.PublicacionInicio;
 import com.example.facebook.dto.Registro;
 import com.example.facebook.entities.Fotos;
 import com.example.facebook.entities.Publicacion;
+import com.example.facebook.entities.PublicacionMegusta;
 import com.example.facebook.entities.Usuario;
 import com.example.facebook.repositories.FotosRepository;
+import com.example.facebook.repositories.PublicacionMegustaRepository;
 import com.example.facebook.repositories.PublicacionRepository;
 import com.example.facebook.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,9 @@ public class PublicacionController {
 
     @Autowired
     FotosRepository fotosRepository;
+
+    @Autowired
+    PublicacionMegustaRepository publicacionMegustaRepository;
 
     @GetMapping("/listPublicaciones")
     private ResponseEntity<List<Publicacion>> listPubilicaciones(){
@@ -77,6 +83,7 @@ public class PublicacionController {
     private ResponseEntity<Boolean> borrarPublicacion(@RequestParam String id){
         try {
             Integer idPub = Integer.parseInt(id);
+            publicacionMegustaRepository.borrarMeGustasPublicacion(idPub);
             publicacionRepository.deleteById(idPub);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {

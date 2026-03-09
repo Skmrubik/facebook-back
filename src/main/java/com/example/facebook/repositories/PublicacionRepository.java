@@ -1,6 +1,7 @@
 package com.example.facebook.repositories;
 
 import com.example.facebook.entities.Publicacion;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 public interface PublicacionRepository extends JpaRepository<Publicacion, Integer> {
 
+    @Transactional
     @Query(value="SELECT * FROM publicacion order by id_publicacion DESC", nativeQuery=true)
     public List<Publicacion> getPublicacionesOrdenadas();
 

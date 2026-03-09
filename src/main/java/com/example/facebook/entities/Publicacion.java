@@ -2,6 +2,8 @@ package com.example.facebook.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name="publicacion")
 public class Publicacion {
@@ -24,6 +26,9 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name="id_foto")
     private Fotos idFoto;
+
+    @Column(name="fecha")
+    private Date fecha;
 
     public Integer getIdPublicacion() {
         return idPublicacion;
@@ -63,5 +68,13 @@ public class Publicacion {
 
     public void setIdFoto(Fotos idFoto) {
         this.idFoto = idFoto;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }

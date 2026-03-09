@@ -57,6 +57,18 @@ public class PublicacionController {
         }
     }
 
+    @GetMapping("/getPublicacionById")
+    private ResponseEntity<Publicacion> getPublicacionById(@RequestParam String id){
+        try {
+            Integer idPub = Integer.parseInt(id);
+            Publicacion publicacion = publicacionRepository.findPublicacionByIdPublicacion(idPub);
+            return new ResponseEntity<>(publicacion, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/publicarInicio")
     private ResponseEntity<Integer> publicar(@RequestBody PublicacionInicio pub){
         try {
@@ -65,6 +77,7 @@ public class PublicacionController {
             publicacion.setIdUsuario1(usuario);
             publicacion.setIdUsuario2(null);
             publicacion.setTexto(pub.getTexto());
+            publicacion.setFecha(pub.getFecha());
             if (pub.getIdFoto()!=null){
                 Fotos foto = fotosRepository.findFotosByIdFoto(pub.getIdFoto());
                 publicacion.setIdFoto(foto);

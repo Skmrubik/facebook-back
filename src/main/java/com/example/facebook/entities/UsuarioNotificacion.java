@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name="usuario_notificacion")
 public class UsuarioNotificacion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_usuario_notificacion")
     private Integer idUsuarioNotificacion;
 
@@ -18,6 +19,12 @@ public class UsuarioNotificacion {
 
     @JoinColumn(name="url")
     private String url;
+
+    @Column(name="tipo")
+    private Integer tipo;
+
+    @Column(name="leido")
+    private Boolean leido;
 
     public Integer getIdUsuarioNotificacion() {
         return idUsuarioNotificacion;
@@ -49,5 +56,21 @@ public class UsuarioNotificacion {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Boolean getLeido() {
+        return leido;
+    }
+
+    public void setLeido(Boolean leido) {
+        this.leido = leido;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 }

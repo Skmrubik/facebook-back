@@ -62,4 +62,18 @@ public class UsuarioNotificacionController {
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/marcarComoLeida")
+    private ResponseEntity<Boolean> marcarComoLeida(@RequestParam String idNot){
+        try {
+            Integer id = Integer.parseInt(idNot);
+            UsuarioNotificacion usuarioNotificacion = usuarioNotificacionRepository.findUsuarioNotificacionByIdUsuarioNotificacion(id);
+            usuarioNotificacion.setLeido(true);
+            usuarioNotificacionRepository.save(usuarioNotificacion);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

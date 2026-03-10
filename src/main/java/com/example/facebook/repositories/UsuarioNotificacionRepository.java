@@ -12,4 +12,6 @@ public interface UsuarioNotificacionRepository extends JpaRepository<UsuarioNoti
     @Transactional
     @Query(value="select * from usuario_notificacion where id_usuario = ?1 and leido = false", nativeQuery=true)
     public List<UsuarioNotificacion> getNotificacionesUsuario(Integer idUsuario);
+
+    public UsuarioNotificacion findUsuarioNotificacionByIdUsuarioNotificacion(Integer usuarioNotificacion);
 }

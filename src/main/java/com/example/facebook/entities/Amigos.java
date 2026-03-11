@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name="amigos")
 public class Amigos {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_amigos")
     private Integer idAmigos;
 
@@ -16,6 +17,9 @@ public class Amigos {
     @ManyToOne
     @JoinColumn(name="id_usuario2")
     private Usuario idUsuario2;
+
+    @Column(name="aceptado")
+    Boolean aceptado;
 
     public Integer getIdAmigos() {
         return idAmigos;
@@ -39,5 +43,13 @@ public class Amigos {
 
     public void setIdUsuario2(Usuario idUsuario2) {
         this.idUsuario2 = idUsuario2;
+    }
+
+    public Boolean getAceptado() {
+        return aceptado;
+    }
+
+    public void setAceptado(Boolean aceptado) {
+        this.aceptado = aceptado;
     }
 }

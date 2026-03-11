@@ -1,14 +1,16 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.dto.Registro;
 import com.example.facebook.entities.Amigos;
 import com.example.facebook.entities.Fotos;
+import com.example.facebook.entities.Usuario;
 import com.example.facebook.repositories.AmigosRepository;
+import com.example.facebook.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,11 +20,45 @@ public class AmigosController {
     @Autowired
     AmigosRepository amigosRepository;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
     @GetMapping("/listAmigos")
     private ResponseEntity<List<Amigos>> listAmigos(){
         try {
             List<Amigos> amigos = amigosRepository.findAll();
             return new ResponseEntity<>(amigos, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getSolicitudes")
+    private ResponseEntity<List<Amigos>> listAmigos(@RequestParam String id){
+        try {
+            Integer idUsuario = Integer.parseInt(id);
+            List<Amigos> amigos = amigosRepository.getSolicitudesAmistad(idUsuario);
+            return new ResponseEntity<>(amigos, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/solicitudAmistad")
+    private ResponseEntity<Boolean> solicitudAmistad(@RequestParam String id1, @RequestParam String id2){
+        try {
+            Integer idUsuario1 = Integer.parseInt(id1);
+            Usuario usuario1 = usuarioRepository.findUsuarioByIdUsuario(idUsuario1);
+            Integer idUsuario2 = Integer.parseInt(id2);
+            Usuario usuario2 = usuarioRepository.findUsuarioByIdUsuario(idUsuario2);
+            Amigos amigos = new Amigos();
+            amigos.setIdUsuario1(usuario1);
+            amigos.setIdUsuario2(usuario2);
+            amigos.setAceptado(false);
+            amigosRepository.save(amigos);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);

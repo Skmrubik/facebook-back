@@ -81,6 +81,18 @@ public class AmigosController {
         }
     }
 
+    @GetMapping("/getAmigos")
+    private ResponseEntity<List<Amigos>> envioAmistad(@RequestParam String id){
+        try {
+            Integer idUsuario1 = Integer.parseInt(id);
+            List<Amigos> amigos = amigosRepository.getAmigos(idUsuario1);
+            return new ResponseEntity<>(amigos, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/aceptarSolicitud")
     private ResponseEntity<Boolean> aceptarSolicitud(@RequestParam String id){
         try {

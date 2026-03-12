@@ -20,5 +20,8 @@ public interface AmigosRepository extends JpaRepository<Amigos, Integer> {
     @Query(value="select * from amigos where id_usuario1 = ?1 and id_usuario2 = ?2 and aceptado = false", nativeQuery=true)
     public Optional<Amigos> getEnvioAmistad(Integer idUsuario1, Integer idUsuario2);
 
+    @Query(value="select * from amigos where id_usuario1 = ?1 and aceptado = true", nativeQuery=true)
+    public List<Amigos> getAmigos(Integer idUsuario);
+
     public Amigos findAmigosByIdAmigos(Integer idAmigos);
 }

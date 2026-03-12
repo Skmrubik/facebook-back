@@ -45,6 +45,18 @@ public class PublicacionController {
         }
     }
 
+    @GetMapping("/listPublicacionesAmigos")
+    private ResponseEntity<List<Publicacion>> listPubilicaciones(@RequestParam String idUsu){
+        try {
+            Integer idUsuario = Integer.parseInt(idUsu);
+            List<Publicacion> publicacions = publicacionRepository.getPublicacionesAmigosOrdenadas(idUsuario);
+            return new ResponseEntity<>(publicacions, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/listPublicacionesByUser")
     private ResponseEntity<List<Publicacion>> listPubilicacionesByUser(@RequestParam String id){
         try {

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AmigosController {
@@ -40,6 +41,23 @@ public class AmigosController {
             Integer idUsuario = Integer.parseInt(id);
             List<Amigos> amigos = amigosRepository.getSolicitudesAmistad(idUsuario);
             return new ResponseEntity<>(amigos, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/buscarAmigo")
+    private ResponseEntity<Boolean> listAmigos(@RequestParam String id1, @RequestParam String id2){
+        try {
+            boolean encontrado= true;
+            Integer idUsuario1 = Integer.parseInt(id1);
+            Integer idUsuario2 = Integer.parseInt(id2);
+            Optional<Amigos> amigos = amigosRepository.getAmistad(idUsuario1, idUsuario2);
+            if (amigos.isEmpty()) {
+                encontrado=false;
+            }
+            return new ResponseEntity<>(encontrado, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);

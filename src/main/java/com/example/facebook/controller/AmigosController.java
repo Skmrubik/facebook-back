@@ -64,6 +64,23 @@ public class AmigosController {
         }
     }
 
+    @GetMapping("/buscarEnvioAmistad")
+    private ResponseEntity<Boolean> envioAmistad(@RequestParam String id1, @RequestParam String id2){
+        try {
+            boolean encontrado= true;
+            Integer idUsuario1 = Integer.parseInt(id1);
+            Integer idUsuario2 = Integer.parseInt(id2);
+            Optional<Amigos> amigos = amigosRepository.getEnvioAmistad(idUsuario1, idUsuario2);
+            if (amigos.isEmpty()) {
+                encontrado=false;
+            }
+            return new ResponseEntity<>(encontrado, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/aceptarSolicitud")
     private ResponseEntity<Boolean> aceptarSolicitud(@RequestParam String id){
         try {

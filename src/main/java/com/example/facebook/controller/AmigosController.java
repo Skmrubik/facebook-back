@@ -46,6 +46,25 @@ public class AmigosController {
         }
     }
 
+    @PutMapping("/aceptarSolicitud")
+    private ResponseEntity<Boolean> aceptarSolicitud(@RequestParam String id){
+        try {
+            Integer idAmigos = Integer.parseInt(id);
+            Amigos amigos = amigosRepository.findAmigosByIdAmigos(idAmigos);
+            amigos.setAceptado(true);
+            amigosRepository.save(amigos);
+            Amigos amigosViceversa = new Amigos();
+            amigosViceversa.setIdUsuario1(amigos.getIdUsuario2());
+            amigosViceversa.setIdUsuario2(amigos.getIdUsuario1());
+            amigosViceversa.setAceptado(true);
+            amigosRepository.save(amigosViceversa);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/solicitudAmistad")
     private ResponseEntity<Boolean> solicitudAmistad(@RequestParam String id1, @RequestParam String id2){
         try {

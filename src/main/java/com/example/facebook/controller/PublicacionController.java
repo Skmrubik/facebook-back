@@ -1,6 +1,7 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.dto.PublicacionInicio;
+import com.example.facebook.dto.PublicacionPerfil;
 import com.example.facebook.dto.Registro;
 import com.example.facebook.entities.Fotos;
 import com.example.facebook.entities.Publicacion;
@@ -88,6 +89,30 @@ public class PublicacionController {
             Usuario usuario = usuarioRepository.findUsuarioByIdUsuario(pub.getIdUsuario());
             publicacion.setIdUsuario1(usuario);
             publicacion.setIdUsuario2(null);
+            publicacion.setTexto(pub.getTexto());
+            publicacion.setFecha(pub.getFecha());
+            if (pub.getIdFoto()!=null){
+                Fotos foto = fotosRepository.findFotosByIdFoto(pub.getIdFoto());
+                publicacion.setIdFoto(foto);
+            } else {
+                publicacion.setIdFoto(null);
+            }
+            Publicacion p = publicacionRepository.save(publicacion);
+            return new ResponseEntity<>(p.getIdPublicacion(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/publicarPerfil")
+    private ResponseEntity<Integer> publicarPerfil(@RequestBody PublicacionPerfil pub){
+        try {
+            Publicacion publicacion = new Publicacion();
+            Usuario usuario1 = usuarioRepository.findUsuarioByIdUsuario(pub.getIdUsuario1());
+            Usuario usuario2 = usuarioRepository.findUsuarioByIdUsuario(pub.getIdUsuario2());
+            publicacion.setIdUsuario1(usuario1);
+            publicacion.setIdUsuario2(usuario2);
             publicacion.setTexto(pub.getTexto());
             publicacion.setFecha(pub.getFecha());
             if (pub.getIdFoto()!=null){

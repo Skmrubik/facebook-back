@@ -3,14 +3,8 @@ package com.example.facebook.controller;
 import com.example.facebook.dto.PublicacionInicio;
 import com.example.facebook.dto.PublicacionPerfil;
 import com.example.facebook.dto.Registro;
-import com.example.facebook.entities.Fotos;
-import com.example.facebook.entities.Publicacion;
-import com.example.facebook.entities.PublicacionMegusta;
-import com.example.facebook.entities.Usuario;
-import com.example.facebook.repositories.FotosRepository;
-import com.example.facebook.repositories.PublicacionMegustaRepository;
-import com.example.facebook.repositories.PublicacionRepository;
-import com.example.facebook.repositories.UsuarioRepository;
+import com.example.facebook.entities.*;
+import com.example.facebook.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +28,9 @@ public class PublicacionController {
 
     @Autowired
     PublicacionMegustaRepository publicacionMegustaRepository;
+
+    @Autowired
+    UsuarioNotificacionRepository usuarioNotificacionRepository;
 
     @GetMapping("/listPublicaciones")
     private ResponseEntity<List<Publicacion>> listPubilicaciones(){
@@ -122,6 +119,13 @@ public class PublicacionController {
                 publicacion.setIdFoto(null);
             }
             Publicacion p = publicacionRepository.save(publicacion);
+            UsuarioNotificacion usuarioNotificacion = new UsuarioNotificacion();
+            usuarioNotificacion.setLeido(false);
+            usuarioNotificacion.setIdUsuario(usuario1);
+            usuarioNotificacion.setTipo(2);
+            usuarioNotificacion.setTexto(usuario2.getNombre()+" ha escrito en tu tablón.");
+            usuarioNotificacion.setUrl("/Perfil/"+usuario1.getIdUsuario());
+            usuarioNotificacionRepository.save(usuarioNotificacion);
             return new ResponseEntity<>(p.getIdPublicacion(), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
